@@ -643,7 +643,20 @@ PtABPNode ABPCeilValue (PtABPNode proot, int pvalue)
 }
 
 int ABPRank (PtABPNode proot, int pvalue)
-{ /* fun��o recursiva - insira o seu codigo */ return 0; }
+{ 	if (proot == NULL) {Error = OK; return 0;}
+
+	if(pvalue < proot->Elem){
+		return ABPRank(proot->PtLeft,pvalue);
+	}	
+	else if (pvalue > proot->Elem){
+		Error = OK;
+		return 1 + ABPSize(proot->PtLeft) + ABPRank(proot->PtRight,pvalue);
+	}
+	else{
+		Error = OK;
+		return ABPSize(proot->PtLeft);
+	}
+}
 
 void ABPElements (PtABPNode proot, PtQueue pqueue, int plow, int phigh)
 { /* fun��o recursiva - insira o seu codigo */ }
