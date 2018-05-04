@@ -594,22 +594,30 @@ void ABPDeleteMax (PtABPNode *proot)
 
 PtABPNode ABPFloorValue (PtABPNode proot, int pvalue){
 	if (proot == NULL) {Error = ABP_EMPTY; return NULL;}
-	if(proot->Elem == pvalue){
+	else if(proot->Elem == pvalue){
 		Error = OK;
 		return proot;
-	}	
-	if(pvalue < proot->Elem){
-		Error = OK;
-		return ABPFloorValue(proot->PtLeft,pvalue);
-	} 
-	PtABPNode temp = ABPFloorValue(proot->PtRight,pvalue);
-	if(temp != NULL){
-		Error = OK;
-		return temp;
-	} 
+	}
 	else{
-		Error = OK;
-		return proot;
+		PtABPNode temp = proot;
+		while(temp != NULL){
+			if(pvalue < temp->Elem){
+				temp = temp->PtLeft;
+				if(temp != NULL && pvalue >= temp->Elem){
+					Error = OK;
+					return temp;
+				}
+			}
+			else{
+				temp = temp->PtRight;
+				if(temp != NULL && pvalue >= temp->Elem){
+					Error = OK;
+					return temp;
+				} 
+			}
+		}
+		Error = ABP_EMPTY;
+		return temp;	
 	}
 }
 
