@@ -1,0 +1,3 @@
+to allocate memory use: 
+
+p = malloc(sizeof(struct time));
