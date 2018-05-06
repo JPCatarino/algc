@@ -579,17 +579,25 @@ void ABPDeleteMin (PtABPNode *proot)
 
 void ABPDeleteMax (PtABPNode *proot)
 {	if (*proot == NULL) { Error = ABP_EMPTY; return;}
-	// PtABPNode temp = *proot;
-	// while(temp->PtRight != NULL){
-	// 	temp = temp->PtRight;
-	// }
-	// NodeDelete(&temp);
-	// Error = OK;
-	while((*proot)->PtRight != NULL){
-		*proot = (*proot)->PtRight;
+	PtABPNode temp = *proot;
+	PtABPNode prev;
+	PtABPNode Nd;
+	
+	while(temp->PtRight != NULL){
+		prev = temp;
+		temp = temp->PtRight;
 	}
-	NodeDelete(proot);
+	
+	Nd = temp;
 	Error = OK;
+
+	if(Nd->PtLeft != NULL){
+		Nd = Nd->PtLeft;
+	}
+	else Nd = NULL;
+	if(temp == *proot) *proot = Nd;
+	else prev->PtRight = Nd;
+	ABPNodeDestroy(&temp);
 }
 
 PtABPNode ABPFloorValue (PtABPNode proot, int pvalue){
