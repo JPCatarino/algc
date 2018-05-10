@@ -674,7 +674,8 @@ void ABPElements (PtABPNode proot, PtQueue pqueue, int plow, int phigh)
 {	/* fun��o recursiva - insira o seu codigo */
 	// OK, ABP_EMPTY, NULL_PTR, INVALID ou NO_MEM
 	if (pqueue == NULL) { Error = NO_MEM ; return; }
-	if (proot == NULL) { Error = ABP_EMPTY; return;	}	/* arvore vazia - empty tree */
+	if (proot == NULL) { Error = ABP_EMPTY; return;	}
+	if(plow > phigh){Error = INVALID; return;}
 	
 	if( proot->Elem >= plow && proot->Elem <= phigh ) {
     	ABPElements(proot->PtLeft,pqueue, plow, phigh);
