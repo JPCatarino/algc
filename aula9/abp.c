@@ -671,9 +671,7 @@ int ABPRank (PtABPNode proot, int pvalue)
 }
 
 void ABPElements (PtABPNode proot, PtQueue pqueue, int plow, int phigh)
-{	/* fun��o recursiva - insira o seu codigo */
-	// OK, ABP_EMPTY, NULL_PTR, INVALID ou NO_MEM
-	if (pqueue == NULL) { Error = NO_MEM ; return; }
+{	if (pqueue == NULL) { Error = NO_MEM ; return; }
 	if (proot == NULL) { Error = ABP_EMPTY; return;	}
 	if(plow > phigh){Error = INVALID; return;}
 	
@@ -697,7 +695,52 @@ void ABPElements (PtABPNode proot, PtQueue pqueue, int plow, int phigh)
 
 
 int ABPIsEvenOdd (PtABPNode proot)
-{ /* fun��o repetitiva - insira o seu codigo */ return 0; }
+{ 	/* fun��o repetitiva - insira o seu codigo */
+	PtABPNode Node = proot; PtStack Stack;
+	int prevPair = -1;
+	int presPair;
+	int res = 1;
+
+	if (proot == NULL) { Error = ABP_EMPTY; return 0;	} /* arvore vazia - empty tree */
+	if ((Stack = StackCreate (sizeof (PtABPNode))) == NULL) { Error = NO_MEM ; return 0; }
+	StackPush (Stack, &Node);	/* armazenar a raiz - storing the root */
+
+	while (!StackIsEmpty (Stack))
+	{
+		if (Node != NULL)	/* n�o � um no externo - not an external node */
+		{
+			Node = Node->PtLeft;
+			StackPush (Stack, &Node);	/* subarvore esquerda - left subtree */
+		}
+		else	/* � um no externo */
+		{
+			StackPop (Stack, &Node);	/* retirar e descartar o no externo - retrieve and ignore the external node */
+			if (!StackIsEmpty (Stack))
+			{
+				StackPop (Stack, &Node);	/* recuperar o no anterior - retrieve and preview node */
+				if(Node->Elem % 2 == 0){
+					presPair = 1;
+				}
+				else
+					presPair = 0;
+				if(prevPair >= 0){
+					if(prevPair == presPair){
+						res = 0;
+						break;
+					}
+				}
+				prevPair = presPair;
+				Node = Node->PtRight;	/* subarvore direita - right subtree */
+				StackPush (Stack, &Node);
+			}
+		}
+	}
+
+	StackDestroy (&Stack);	/* destruir a pilha - releasing the stack */
+    Error = OK;
+	return res;
+
+}
 
 /******************************************************************************/
 
