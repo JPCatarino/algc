@@ -671,7 +671,38 @@ int ABPRank (PtABPNode proot, int pvalue)
 }
 
 void ABPElements (PtABPNode proot, PtQueue pqueue, int plow, int phigh)
-{ /* fun��o recursiva - insira o seu codigo */ }
+{	/* fun��o recursiva - insira o seu codigo */
+	// OK, ABP_EMPTY, NULL_PTR, INVALID ou NO_MEM
+	if ((pqueue = QueueCreate (sizeof (PtABPNode))) == NULL) { Error = NO_MEM ; return; }
+	if (proot == NULL) { Error = ABP_EMPTY; return;	}	/* arvore vazia - empty tree */
+
+/* 	if(proot->Elem == phigh && proot->Elem == plow){
+		QueueEnqueue(pqueue,&proot->Elem);
+		Error = OK;
+		return;
+	} */
+/* 	if (proot->Elem <= phigh && proot->Elem >= plow){
+         return ABPElements(proot->PtLeft,pqueue,plow, phigh);
+         return ABPElements(proot->PtRight,pqueue, plow, phigh);
+		 QueueEnqueue(pqueue,&proot->Elem);
+		 Error = OK;
+	}
+	else if(proot->Elem < plow){
+		return ABPElements(proot->PtRight,pqueue,plow,phigh);
+	}
+	else
+		return ABPElements(proot->PtLeft,pqueue,plow,phigh); */
+	if(plow < proot->Elem){
+		ABPElements(proot->PtLeft,pqueue,plow,phigh);
+	}
+	if ( plow <= proot->Elem && phigh >= proot->Elem ){
+		Error = OK;
+		QueueEnqueue(pqueue,&proot->Elem);
+	}
+   if (phigh > proot->Elem )
+		ABPElements(proot->PtRight,pqueue, plow, phigh);
+	
+}
 
 int ABPIsEvenOdd (PtABPNode proot)
 { /* fun��o repetitiva - insira o seu codigo */ return 0; }
