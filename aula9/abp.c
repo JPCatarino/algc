@@ -651,18 +651,22 @@ PtABPNode ABPCeilValue (PtABPNode proot, int pvalue)
 }
 
 int ABPRank (PtABPNode proot, int pvalue)
-{ 	if (proot == NULL) {Error = OK; return 0;}
+{ 	if (proot == NULL) {Error = ABP_EMPTY; return 0;}
 
 	if(pvalue < proot->Elem){
-		return ABPRank(proot->PtLeft,pvalue);
+		int res = ABPRank(proot->PtLeft,pvalue);
+		Error = OK;
+		return res;
 	}	
 	else if (pvalue > proot->Elem){
+		int res = 1 + ABPSize(proot->PtLeft) + ABPRank(proot->PtRight,pvalue);
 		Error = OK;
-		return 1 + ABPSize(proot->PtLeft) + ABPRank(proot->PtRight,pvalue);
+		return res;
 	}
 	else{
+		int res = ABPSize(proot->PtLeft);
 		Error = OK;
-		return ABPSize(proot->PtLeft);
+		return res;
 	}
 }
 
