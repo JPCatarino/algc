@@ -421,7 +421,6 @@ int VertexType (PtDigraph pdig, unsigned int pv)
 
 int VertexOutDegreeCentrality (PtDigraph pdig, unsigned int pv, double *pcent)
 { 
-	/* insira o seu codigo */
 	if (pdig == NULL) return NO_DIGRAPH;
 	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
 	if (pcent == NULL) return NULL_PTR;
@@ -433,7 +432,7 @@ int VertexOutDegreeCentrality (PtDigraph pdig, unsigned int pv, double *pcent)
 
 	PtVertex tmpVt = tmpNd->PtElem;	
 
-	double res = (double) tmpVt->OutDeg/pdig->NVertexes;
+	double res = (double) tmpVt->OutDeg/(pdig->NVertexes-1);
 	
 	*pcent = res;
 
@@ -442,7 +441,28 @@ int VertexOutDegreeCentrality (PtDigraph pdig, unsigned int pv, double *pcent)
 
 int MaxOutDegreeCentrality (PtDigraph pdig, unsigned int *pv, double *pmax)
 { 
-	/* insira o seu codigo */
+	if (pdig == NULL) return NO_DIGRAPH;
+	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+	if (pv == NULL || pmax == NULL) return NULL_PTR;
+
+	double max = -999999999;
+	unsigned int maxp;
+	PtBiNode tmpNd = OutPosition(pdig->Head, *pv);
+
+	while(tmpNd->PtNext != NULL){
+		VertexOutDegreeCentrality(pdig,*pv,pmax);
+		if(*pmax > max){
+			max = *pmax;
+			maxp = *pv;
+		}
+		else if(*pmax <= max){
+			break;
+		}
+		tmpNd = tmpNd->PtNext;
+		*pv = tmpNd->Number;	
+	}
+	*pmax = max;
+	*pv = maxp;
 	return OK;
 }
 
