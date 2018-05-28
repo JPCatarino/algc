@@ -468,7 +468,32 @@ int MaxOutDegreeCentrality (PtDigraph pdig, unsigned int *pv, double *pmax)
 
 int AverageSucessorOutDegree (PtDigraph pdig, unsigned int pv, double *pcent)
 { 
-	/* insira o seu codigo */
+	if (pdig == NULL) return NO_DIGRAPH;
+	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+	if (pcent == NULL) return NULL_PTR;
+
+	PtBiNode tmpNd = OutPosition(pdig->Head, pv);
+	if(tmpNd == NULL)
+		return NO_VERTEX;
+	PtVertex tmpVt = tmpNd->PtElem;	
+	
+	if(tmpVt->OutDeg == 0) return NO_EDGE;
+
+	PtBiNode tmpLs = tmpNd->PtAdj;
+	int sumTotal = 0;
+	PtBiNode auxLs;
+
+	while(tmpLs != NULL){
+		auxLs = tmpLs->PtAdj;
+		PtVertex auxVt = auxLs->PtElem;
+		sumTotal = sumTotal + auxVt->OutDeg;
+		tmpLs = tmpLs->PtNext;
+	}
+
+	double media = (double)sumTotal/(double)tmpVt->OutDeg;
+	
+	*pcent = media;
+
 	return OK;
 }
 
