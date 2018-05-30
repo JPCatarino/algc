@@ -143,7 +143,7 @@ void EscreverDigrafo (PtDigraph pdigraph)
 void PrintQueue (PtQueue pqueue, char *pmsg)
 {
 	if (pqueue == NULL) { printf ("Erro\n"); return ; }
-	
+
 	int Number;
 	printf("%s ", pmsg);
 	while (!QueueIsEmpty (pqueue))
@@ -157,7 +157,7 @@ void PrintQueue (PtQueue pqueue, char *pmsg)
 void PrintQueuePair (PtQueue pqueue)
 {
 	if (pqueue == NULL) { printf ("Erro\n"); return ; }
-	
+
 	int Number;
 	printf("Arestas inexistentes ");
 	while (!QueueIsEmpty (pqueue))
@@ -167,4 +167,3 @@ void PrintQueuePair (PtQueue pqueue)
 	}
 	printf ("\n");
 }
-

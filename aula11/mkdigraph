@@ -1,12 +1,12 @@
 # makefile para o dígrafo/grafo dinâmico
 CC = gcc
-CFLAGS = -ansi -Wall
+CFLAGS = -Wall
 
 OBJM = digraph.o queue.o
 HEADERS = digraph.h queue.h
 
 OBJECTS = $(OBJM) simdigraph.o testdigraph.o queue.o
-EXES = sdig
+EXES = sdig tdig
 
 all:	$(EXES)
 

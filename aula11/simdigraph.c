@@ -1,9 +1,9 @@
 /*******************************************************************************
 
- Programa gr·fico de simulaÁ„o da funcionalidade do TDA Digraph
+ Programa gr√°fico de simula√ß√£o da funcionalidade do TDA Digraph
 
 
- Autor : AntÛnio Manuel Adrego da Rocha    Data : Maio de 2018
+ Autor : Ant√≥nio Manuel Adrego da Rocha    Data : Maio de 2018
 
 *******************************************************************************/
 
@@ -43,7 +43,7 @@ int main (void)
   char Filename[21]; double Centrality; PtQueue Queue = NULL;
 
   for (Index = 0; Index < MAX_DIGRAPHS; Index++) DigraphArray[Index] = NULL;
-  
+
   do
   {
     /* apresentar menu */
@@ -61,7 +61,7 @@ int main (void)
         printf ("\e[0m");
       }
 
-    /* ler opÁ„o do utilizador */
+    /* ler op√ß√£o do utilizador */
     ReadOption (&Option);
 
     switch (Option)
@@ -120,13 +120,13 @@ int main (void)
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
                   do
                   {
-                     ReadDigraphIndex (&Digraph2, "digrafo/grafo destino"); 
+                     ReadDigraphIndex (&Digraph2, "digrafo/grafo destino");
                   } while (Digraph2 == Digraph1);
                   if (ActiveDigraph (DigraphArray, Digraph2)) break;
                   DigraphArray[Digraph2] = Copy (DigraphArray[Digraph1]);
                   if (DigraphArray[Digraph2] == NULL) WriteErrorMessage (NO_MEM, "A copia");
                   break;
-		  
+
         case 9 :  ReadDigraphIndex (&Digraph1, "digrafo");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
                   WriteDigraph (DigraphArray[Digraph1]);
@@ -159,14 +159,14 @@ int main (void)
 
         case 12 : ReadDigraphIndex (&Digraph1, "digrafo");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
-                  ReadVertex (&Vertex1); 
+                  ReadVertex (&Vertex1);
 		          Error = VertexOutDegreeCentrality (DigraphArray[Digraph1], Vertex1, &Centrality);
                   if (Error) { WriteErrorMessage (Error, "A determinacao da centralidade de vertices sucessores"); break; }
 		          printf("\e[1m\e[34;1f| Centralidade de vertices sucessores do vertice %d = %f: ", Vertex1, Centrality);
                   printf("\e[0m\e[35;1f| Prima uma tecla para continuar ");
                   scanf ("%*[^\n]"); scanf ("%*c");
                   break;
-			
+
         case 13 : ReadDigraphIndex (&Digraph1, "digrafo");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
 		          Error = MaxOutDegreeCentrality (DigraphArray[Digraph1], &Vertex1, &Centrality);
@@ -178,10 +178,10 @@ int main (void)
 
         case 14 : ReadDigraphIndex (&Digraph1, "digrafo");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
-                  ReadVertex (&Vertex1); 
+                  ReadVertex (&Vertex1);
 		          Error = AverageSucessorOutDegree (DigraphArray[Digraph1], Vertex1, &Centrality);
-                  if (Error) { WriteErrorMessage (Error, "A determinacao da centralidade media dos vertices sucessores"); break; }
-		          printf("\e[1m\e[34;1f| Centralidade media de vertices sucessores do vertice %d = %f: ", Vertex1, Centrality);
+                  if (Error) { WriteErrorMessage (Error, "A determinacao da media de sucessores dos sucessores"); break; }
+		          printf("\e[1m\e[34;1f| Media de sucessores dos sucessores do vertice %d = %f: ", Vertex1, Centrality);
                   printf("\e[0m\e[35;1f| Prima uma tecla para continuar ");
                   scanf ("%*[^\n]"); scanf ("%*c");
                   break;
@@ -196,30 +196,30 @@ int main (void)
                   scanf ("%*[^\n]"); scanf ("%*c");
                   break;
 
-/*	
+/*
         case 16:  ReadDigraphIndex (&Digraph1, "digrafo origem");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
                   do
                   {
-                     ReadDigraphIndex (&Digraph2, "digrafo destino"); 
+                     ReadDigraphIndex (&Digraph2, "digrafo destino");
                   } while (Digraph2 == Digraph1);
                   if (ActiveDigraph (DigraphArray, Digraph2)) break;
                   DigraphArray[Digraph2] = DigraphTranspose (DigraphArray[Digraph1]);
                   if (DigraphArray[Digraph2] == NULL) WriteErrorMessage (NO_MEM, "O digrafo transposto");
                   break;
-	  
+
         case 17 : ReadDigraphIndex (&Digraph1, "digrafo origem");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
                   do
                   {
-                     ReadDigraphIndex (&Digraph2, "digrafo destino"); 
+                     ReadDigraphIndex (&Digraph2, "digrafo destino");
                   } while (Digraph2 == Digraph1);
                   if (ActiveDigraph (DigraphArray, Digraph2)) break;
                   DigraphArray[Digraph2] = DigraphComplement (DigraphArray[Digraph1]);
                   if (DigraphArray[Digraph2] == NULL) WriteErrorMessage (NO_MEM, "O digrafo complementar");
                   break;
 */
-        case 16:  
+        case 16:
         case 17:
 				  printf("\e[34;1f| operacao nao implementada\e[1m");
                   printf("\e[0m\e[35;1f| Prima uma tecla para continuar ");
@@ -228,7 +228,7 @@ int main (void)
 
          case 18 : ReadDigraphIndex (&Digraph1, "digrafo");
                    if (NotActiveDigraph (DigraphArray, Digraph1)) break;
-                   ReadVertex (&Vertex1); 
+                   ReadVertex (&Vertex1);
                    Error = AllPredecessors (DigraphArray[Digraph1], Vertex1, &Queue);
                    if (Error) { WriteErrorMessage (Error, "A determinacao de vertices predecessores"); break; }
                    if (QueueIsEmpty (Queue)) printf("\e[1m\e[34;1f| Nao existem vertices predecessores do vertice %d", Vertex1);
@@ -236,7 +236,7 @@ int main (void)
                    printf("\e[0m\e[35;1f| Prima uma tecla para continuar ");
                    scanf ("%*[^\n]"); scanf ("%*c");
                    break;
-			
+
         case 19 : ReadDigraphIndex (&Digraph1, "digrafo");
                   if (NotActiveDigraph (DigraphArray, Digraph1)) break;
                   Error = AllNonEdges (DigraphArray[Digraph1], &Queue);
@@ -249,7 +249,7 @@ int main (void)
     }
   } while (Option != 0);
 
-  for (Index = 0; Index < MAX_DIGRAPHS; Index++) 
+  for (Index = 0; Index < MAX_DIGRAPHS; Index++)
     if (DigraphArray[Index] != NULL) Destroy (&DigraphArray[Index]);
 
   printf ("\e[37;1f");
@@ -357,7 +357,7 @@ void ReadFilename (char *pnf)
 void ReadOption (int *popc)
 {
   do
-  {  
+  {
     *popc = 0;
     printf("\e[26;1f| Opcao ->                       |");
     printf("\e[26;12f"); scanf ("%d", popc);
@@ -464,9 +464,9 @@ void WriteAllPaths (unsigned int pvpred[], int pcost[], unsigned int pvertex, un
   printf ("\e[1m\e[5;67fCaminhos mais curtos a partir do vertice %d\n", pvertex);
 
   for (I = 1; I <= pnv; I++)
-    if (pvpred[I-1] != 0)  /* vÈrtice alcanÁ·vel */
+    if (pvpred[I-1] != 0)  /* v√©rtice alcan√ß√°vel */
     {
-      printf ("\e[%d;67f", 5+I); 
+      printf ("\e[%d;67f", 5+I);
       WritePath (pvpred, I);
       printf ("%d - Custo = %d\n", I, pcost[I-1]);
     }
@@ -484,7 +484,7 @@ void WritePath (unsigned int pvpred[], unsigned int pv)
 void PrintQueue (PtQueue pqueue, char *pmsg)
 {
 	if (pqueue == NULL) { printf ("Erro\n"); return ; }
-	
+
 	int Number;
 	printf("\e[1m\e[34;1f| %s ", pmsg);
 	while (!QueueIsEmpty (pqueue))
@@ -497,7 +497,7 @@ void PrintQueue (PtQueue pqueue, char *pmsg)
 void PrintQueuePair (PtQueue pqueue)
 {
 	if (pqueue == NULL) { printf ("Erro\n"); return ; }
-	
+
 	int Number, Line = 6, Count = 0;
 	printf("\e[1m\e[5;66f Arestas inexistentes no digrafo");
 	printf ("\e[1m\e[%d;66f ", Line);
