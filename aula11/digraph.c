@@ -1,4 +1,11 @@
-/* Nome: Jorge Ricardo Pinto de Figueiredo Catarino Nr: 85028 */
+/*
+Nome: Jorge Ricardo Pinto de Figueiredo Catarino
+NMec: 85028
+
+Nome: Paulo Brandão Vasconcelos
+NMec: 84987
+*/
+
 /************ Implementa��o do D�grafo Din�mico - digraph.c ************/
 
 #include <stdlib.h>
@@ -258,7 +265,7 @@ int OutEdge (PtDigraph pdig, unsigned int pv1, unsigned int pv2)
 	if ((V2 = OutPosition (pdig->Head, pv2)) == NULL)
 		return NO_VERTEX;	/* v�rtice incidente inexistente */
 
- 
+
 	DeleteEdge (V1, V2);	/* remover a aresta v1-v2 */
 					/* se � grafo, remover tamb�m a aresta v2-v1 */
 	if (!pdig->Type) DeleteEdge (V2, V1);
@@ -395,16 +402,16 @@ int StoreFile (PtDigraph pdig, char *pfilename)
 /**************************** Aulas 12 e 13 ****************************/
 
 int VertexType (PtDigraph pdig, unsigned int pv)
-{ 
+{
 	if (pdig == NULL) return NO_DIGRAPH;
 	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
-	
+
 	PtBiNode tmpNd = OutPosition(pdig->Head, pv);
-	
+
 	if(tmpNd == NULL)
 		return NO_VERTEX;
 
-	PtVertex tmpVt = tmpNd->PtElem;	
+	PtVertex tmpVt = tmpNd->PtElem;
 
 	if(tmpVt->OutDeg == 0 && tmpVt->InDeg !=0)
 		return SINK;
@@ -419,27 +426,27 @@ int VertexType (PtDigraph pdig, unsigned int pv)
 }
 
 int VertexOutDegreeCentrality (PtDigraph pdig, unsigned int pv, double *pcent)
-{ 
+{
 	if (pdig == NULL) return NO_DIGRAPH;
 	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
 	if (pcent == NULL) return NULL_PTR;
 
 	PtBiNode tmpNd = OutPosition(pdig->Head, pv);
-	
+
 	if(tmpNd == NULL)
 		return NO_VERTEX;
 
-	PtVertex tmpVt = tmpNd->PtElem;	
+	PtVertex tmpVt = tmpNd->PtElem;
 
 	double res = (double) tmpVt->OutDeg/(pdig->NVertexes-1);
-	
+
 	*pcent = res;
 
 	return OK;
 }
 
 int MaxOutDegreeCentrality (PtDigraph pdig, unsigned int *pv, double *pmax)
-{ 
+{
 	if (pdig == NULL) return NO_DIGRAPH;
 	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
 	if (pv == NULL || pmax == NULL) return NULL_PTR;
@@ -457,7 +464,7 @@ int MaxOutDegreeCentrality (PtDigraph pdig, unsigned int *pv, double *pmax)
 		else if(*pmax == max){
 			break;
 		}
-		tmpNd = tmpNd->PtNext;	
+		tmpNd = tmpNd->PtNext;
 	}
 	*pmax = max;
 	*pv = maxp;
@@ -465,7 +472,7 @@ int MaxOutDegreeCentrality (PtDigraph pdig, unsigned int *pv, double *pmax)
 }
 
 int AverageSucessorOutDegree (PtDigraph pdig, unsigned int pv, double *pcent)
-{ 
+{
 	if (pdig == NULL) return NO_DIGRAPH;
 	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
 	if (pcent == NULL) return NULL_PTR;
@@ -473,8 +480,8 @@ int AverageSucessorOutDegree (PtDigraph pdig, unsigned int pv, double *pcent)
 	PtBiNode tmpNd = OutPosition(pdig->Head, pv);
 	if(tmpNd == NULL)
 		return NO_VERTEX;
-	PtVertex tmpVt = tmpNd->PtElem;	
-	
+	PtVertex tmpVt = tmpNd->PtElem;
+
 	if(tmpVt->OutDeg == 0) return NO_EDGE;
 
 	PtBiNode tmpLs = tmpNd->PtAdj;
@@ -489,27 +496,65 @@ int AverageSucessorOutDegree (PtDigraph pdig, unsigned int pv, double *pcent)
 	}
 
 	double media = (double)sumTotal/(double)tmpVt->OutDeg;
-	
+
 	*pcent = media;
 
 	return OK;
 }
 
 int AllIsolates (PtDigraph pdig, PtQueue *pqueue)
-{ 
-	/* insira o seu codigo */
+{
+	// Base verifications
+	if (pdig == NULL) return NO_DIGRAPH;
+	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+	// -----------------------------------------------
+	// Queue verifications
+	/*
+	0 = OK
+	1 = NO_QUEUE
+	4 = QUEUE_EMPTY
+	*/
+	if (pqueue == NULL) return NULL_PTR;
+	if(pqueue.QueueIsEmpty() != 1) {																	// If queue exists,
+		while(pqueue.QueueIsEmpty() == 0) { pqueue.QueueDequeue(); } 		// Empty it
+	}
+	// -----------------------------------------------
+
 	return OK;
 }
 
 int AllPredecessors (PtDigraph pdig, unsigned int pv, PtQueue *pqueue)
-{ 
+ {
 	/* insira o seu codigo */
-	return OK;
-}
+	if (pdig == NULL) return NO_DIGRAPH;
+	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+	if (pqueue == NULL) return NULL_PTR;
+
+
+	PtBiNode tmpNd = OutPosition(pdig->Head, pv);
+
+	if(tmpNd == NULL)
+		return NO_VERTEX;
+
+	PtVertex tmpVt = tmpNd->PtElem;
+
+	*pqueue = QueueCreate(tmpVt->InDeg);
+
+	for(PtBiNode tmpNd2 = pdig->Head;tmpNd2 != NULL;tmpNd2 = tmpNd2->PtNext){
+		for(PtBiNode tmpNd3 = tmpNd2->PtAdj;tmpNd3 != NULL;tmpNd3 = tmpNd3->PtNext){
+			if(tmpNd3->Number == pv){
+				if(QueueEnqueue(*pqueue,&tmpNd2->Number) == NO_MEM) return NO_MEM;
+			}
+		}
+	}
+ 	return OK;
+ }
 
 int AllNonEdges (PtDigraph pdig, PtQueue *pqueue)
-{ 
-	/* insira o seu codigo */
+{
+	if (pdig == NULL) return NO_DIGRAPH;
+	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+
 	return OK;
 }
 
@@ -576,7 +621,7 @@ static void DeleteEdge (PtBiNode pv1, PtBiNode pv2)
 }
 
 /* Fun��o que cria o v�rtice do d�grafo/grafo. Devolve a refer�ncia do v�rtice criado ou NULL, caso n�o consiga cri�-lo por falta de mem�ria. */
- 
+
 static PtVertex CreateVertex (void)
 {
 	PtVertex Vertex;
@@ -630,7 +675,7 @@ static void DestroyBiNode (PtBiNode *pbinode)
 }
 
 /* Fun��o de pesquisa para inser��o. Devolve um ponteiro para o bin� � frente do qual deve ser feita a inser��o do novo v�rtice (nova aresta) ou NULL, caso o v�rtice (a aresta) j� exista. */
- 
+
 static PtBiNode InPosition (PtBiNode phead, unsigned int pnumber)
 {
 	PtBiNode Node, Prev;
@@ -655,4 +700,3 @@ static PtBiNode OutPosition (PtBiNode phead, unsigned int pnumber)
 		if (Node->Number == pnumber) break;
 	return Node;
 }
-
