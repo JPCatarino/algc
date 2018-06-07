@@ -1,3 +1,4 @@
+/* Nome: Jorge Ricardo Pinto de Figueiredo Catarino Nr: 85028 */
 /************ Implementa��o do D�grafo Din�mico - digraph.c ************/
 
 #include <stdlib.h>
