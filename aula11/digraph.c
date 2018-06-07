@@ -503,7 +503,27 @@ int AllIsolates (PtDigraph pdig, PtQueue *pqueue)
 
 int AllPredecessors (PtDigraph pdig, unsigned int pv, PtQueue *pqueue)
 { 
-	/* insira o seu codigo */
+	if (pdig == NULL) return NO_DIGRAPH;
+	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+	if (pqueue == NULL) return NULL_PTR;
+
+
+	PtBiNode tmpNd = OutPosition(pdig->Head, pv);
+	
+	if(tmpNd == NULL)
+		return NO_VERTEX;
+
+	PtVertex tmpVt = tmpNd->PtElem;	
+
+	*pqueue = QueueCreate(tmpVt->InDeg);
+
+	for(PtBiNode tmpNd2 = pdig->Head;tmpNd2 != NULL;tmpNd2 = tmpNd2->PtNext){
+		for(PtBiNode tmpNd3 = tmpNd2->PtAdj;tmpNd3 != NULL;tmpNd3 = tmpNd3->PtNext){
+			if(tmpNd3->Number == pv){
+				if(QueueEnqueue(*pqueue,&tmpNd2->Number) == NO_MEM) return NO_MEM;
+			}
+		}
+	}
 	return OK;
 }
 
