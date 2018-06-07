@@ -524,8 +524,7 @@ int AllIsolates (PtDigraph pdig, PtQueue *pqueue)
 }
 
 int AllPredecessors (PtDigraph pdig, unsigned int pv, PtQueue *pqueue)
- {
-	/* insira o seu codigo */
+{
 	if (pdig == NULL) return NO_DIGRAPH;
 	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
 	if (pqueue == NULL) return NULL_PTR;
