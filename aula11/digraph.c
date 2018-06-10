@@ -504,22 +504,17 @@ int AverageSucessorOutDegree (PtDigraph pdig, unsigned int pv, double *pcent)
 
 int AllIsolates (PtDigraph pdig, PtQueue *pqueue)
 {
-	// Base verifications
-	if (pdig == NULL) return NO_DIGRAPH;
-	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
-	// -----------------------------------------------
-	// Queue verifications
-	/*
-	0 = OK
-	1 = NO_QUEUE
-	4 = QUEUE_EMPTY
-	*/
-	if (pqueue == NULL) return NULL_PTR;
-	if(pqueue.QueueIsEmpty() != 1) {																	// If queue exists,
-		while(pqueue.QueueIsEmpty() == 0) { pqueue.QueueDequeue(); } 		// Empty it
-	}
-	// -----------------------------------------------
+	if(!pdig) { return NO_DIGRAPH; }
+	if(pdig->NVertexes == 0) { return DIGRAPH_EMPTY; }
+	if(!pqueue) { return NULL_PTR; }
+	if((*pqueue = QueueCreate(sizeof(int))) == NULL) { return NO_MEM; }
 
+	PtBiNode n;
+	PtVertex v;
+	for (n=pdig->Head; n!=NULL; n=n->PtNext){
+		v = (PtVertex) n->PtElem;
+		if ((v->InDeg == 0 && v->OutDeg == 0)&&(QueueEnqueue(*pqueue,&(n->Number)) == NO_MEM)) { QueueDestroy(&(*pqueue)); return NO_MEM; }
+	}
 	return OK;
 }
 
@@ -547,14 +542,32 @@ int AllPredecessors (PtDigraph pdig, unsigned int pv, PtQueue *pqueue)
 		}
 	}
  	return OK;
- }
+}
 
 int AllNonEdges (PtDigraph pdig, PtQueue *pqueue)
 {
-	if (pdig == NULL) return NO_DIGRAPH;
-	if (pdig->NVertexes == 0) return DIGRAPH_EMPTY;
+	if(!pdig) { return NO_DIGRAPH; }
+	if(pdig->NVertexes == 0) { return DIGRAPH_EMPTY; }
+	if(!pqueue) { return NULL_PTR; }
+	if((*pqueue = QueueCreate(sizeof(int))) == NULL) { return NO_MEM; }
+
+	int isAdjacent;
+	for(PtBiNode vert1 = pdig->Head; vert1 != NULL; vert1 = vert1->PtNext)  {
+		for(PtBiNode vert2 = pdig->Head; vert2 != NULL; vert2 = vert2->PtNext)  {
+			if(vert1 == vert2) continue;
+			isAdjacent = 0;
+			for(PtBiNode adj = vert1->PtAdj; adj != NULL; adj = adj->PtNext) {
+				if(adj->Number == vert2->Number) { isAdjacent = 1; break; }
+			}
+			if(!isAdjacent){
+				QueueEnqueue(*pqueue, &(vert1->Number));
+				QueueEnqueue(*pqueue, &(vert2->Number));
+			}
+		}
+	}
 
 	return OK;
+
 }
 
 /***************** Defini��o dos Subprogramas Internos *****************/
